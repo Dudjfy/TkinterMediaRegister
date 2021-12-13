@@ -54,8 +54,15 @@ for widget_collection in [book_widgets.values(), movie_widgets.values()]:
 lst_box = Listbox(root, height=14, width=35, bd=2, relief=GROOVE)
 lst_box.place(x=245, y=35)
 
-filters = LabelFrame(root, text="Show", padx=92, pady=10)
+filters = LabelFrame(root, text="Show", pady=5)
 filters.place(x=245, y=265)
-Label(filters, text="Hey").pack()
+show_all = Radiobutton(filters, text="All")
+show_books = Radiobutton(filters, text="Books")
+show_movies = Radiobutton(filters, text="Movies")
+empty = Label(filters, width=5)
+show_all.grid(column=0, row=0)
+show_books.grid(column=1, row=0)
+show_movies.grid(column=2, row=0)
+empty.grid(column=3, row=0)
 
 mainloop()
