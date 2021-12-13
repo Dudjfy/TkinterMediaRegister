@@ -5,9 +5,10 @@ from PIL import ImageTk, Image
 
 root = Tk()
 root.title("Media Register")
+root.geometry("470x330")
 
 notebook = ttk.Notebook(root)
-notebook.pack(padx=15, pady=15, expand=True)
+notebook.place(x=15, y=15)
 
 books = Frame(notebook, width=220, height=220, bg="white")
 movies = Frame(notebook, width=220, height=220, bg="white")
@@ -17,12 +18,12 @@ notebook.add(movies, text="Add Movies")
 
 # Books widgets
 positions = [
-    (5, 20),
-    (60, 20),
-    (5, 45),
-    (60, 45),
-    (5, 70),
-    (60, 70),
+    (10, 20),
+    (70, 20),
+    (10, 45),
+    (70, 45),
+    (10, 70),
+    (70, 70),
     (100, 170),
 ]
 
@@ -50,6 +51,11 @@ for widget_collection in [book_widgets.values(), movie_widgets.values()]:
     for coords, widget in enumerate(widget_collection):
         widget.place(x=positions[coords][0], y=positions[coords][1])
 
+lst_box = Listbox(root, height=14, width=35, bd=2, relief=GROOVE)
+lst_box.place(x=245, y=35)
 
+filters = LabelFrame(root, text="Show", padx=92, pady=10)
+filters.place(x=245, y=265)
+Label(filters, text="Hey").pack()
 
 mainloop()
