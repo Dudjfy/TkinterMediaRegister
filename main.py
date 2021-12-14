@@ -31,6 +31,8 @@ class ItemsData:
         self.all = []
 
         self.state = ItemStates.ALL
+        self.tk_state = IntVar()
+        self.tk_state.set(2)
 
     def add_book(self, title, author, pages):
         if len(title.strip()) > 1 and len(author.strip()) and pages > 0:
@@ -48,6 +50,7 @@ class ItemsData:
 
     def change_state(self, state):
         self.state = state
+        update_lst_box(self.get_items())
 
     def get_items(self):
         if self.state == ItemStates.BOOKS:
@@ -130,13 +133,14 @@ for widget_collection in [book_widgets.values(), movie_widgets.values()]:
 
 filters = LabelFrame(root, text="Show", pady=5)
 filters.place(x=245, y=265)
-show_all = Radiobutton(filters, text="All")
-show_books = Radiobutton(filters, text="Books")
-show_movies = Radiobutton(filters, text="Movies")
+show_all = Radiobutton(filters, text="All", command=lambda: items_data.change_state(ItemStates.ALL), value=IntVar())
+show_books = Radiobutton(filters, text="Books", command=lambda: items_data.change_state(ItemStates.BOOKS), value=IntVar())
+show_movies = Radiobutton(filters, text="Movies", command=lambda: items_data.change_state(ItemStates.MOVIES), value=IntVar())
 empty = Label(filters, width=5)
 show_all.grid(column=0, row=0)
 show_books.grid(column=1, row=0)
 show_movies.grid(column=2, row=0)
 empty.grid(column=3, row=0)
+show_all.select()
 
 mainloop()
