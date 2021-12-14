@@ -60,9 +60,9 @@ class ItemsData:
     # Gets the items according to the state
     def get_items(self):
         if self.state == ItemStates.BOOKS:
-            return self.movies
-        elif self.state == ItemStates.MOVIES:
             return self.books
+        elif self.state == ItemStates.MOVIES:
+            return self.movies
         else:
             return self.all
 
