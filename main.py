@@ -3,27 +3,31 @@ from tkinter import *
 from tkinter import filedialog, ttk
 from PIL import ImageTk, Image
 
-
+# Root setup
 root = Tk()
 root.title("Media Register")
 root.geometry("470x330")
 
+# List box
 lst_box = Listbox(root, height=14, width=35, bd=2, relief=GROOVE)
 lst_box.place(x=245, y=35)
 
 
-class ItemStates(Enum):
-    BOOKS = 0
-    MOVIES = 1
-    ALL = 2
-
-
+# Function to update list box
 def update_lst_box(items_data):
     lst_box.delete(0, END)
     for item in items_data:
         lst_box.insert(END, item)
 
 
+# Enum class for item states
+class ItemStates(Enum):
+    BOOKS = 0
+    MOVIES = 1
+    ALL = 2
+
+
+# Items data class to work with the data
 class ItemsData:
     def __init__(self):
         self.books = []
@@ -31,9 +35,8 @@ class ItemsData:
         self.all = []
 
         self.state = ItemStates.ALL
-        self.tk_state = IntVar()
-        self.tk_state.set(2)
 
+    # Adds books to the data sets and updates the list
     def add_book(self, title, author, pages):
         if len(title.strip()) > 1 and len(author.strip()) and pages > 0:
             book = f"{title} ({author}, {pages} pages)"
@@ -41,6 +44,7 @@ class ItemsData:
             self.all.append(book)
             update_lst_box(self.get_items())
 
+    # Adds movies to the data sets and updates the list
     def add_movie(self, title, director, length):
         if len(title.strip()) > 1 and len(director.strip()) and length > 0:
             movie = f"{title} ({director}, {length} minutes)"
@@ -48,10 +52,12 @@ class ItemsData:
             self.all.append(movie)
             update_lst_box(self.get_items())
 
+    # Changes state and updates the list box
     def change_state(self, state):
         self.state = state
         update_lst_box(self.get_items())
 
+    # Gets the items according to the state
     def get_items(self):
         if self.state == ItemStates.BOOKS:
             return self.movies
@@ -60,29 +66,21 @@ class ItemsData:
         else:
             return self.all
 
-
+# Creates the items data object
 items_data = ItemsData()
 
-# def insert_book(title, author, pages):
-#     if len(title.strip()) > 1 and len(author.strip()) and pages > 0:
-#         lst_box.insert(END, f"{title} ({author}, {pages} pages)")
-#
-#
-# def insert_movie(title, director, length):
-#     if len(title.strip()) > 1 and len(director.strip()) and length > 0:
-#         lst_box.insert(END, f"{title} ({director}, {length} minutes)")
-
-
+# Creates notebook
 notebook = ttk.Notebook(root)
 notebook.place(x=15, y=15)
 
+# Creates tabs
 books = Frame(notebook, width=220, height=220, bg="white")
 movies = Frame(notebook, width=220, height=220, bg="white")
 
 notebook.add(books, text="Add Books")
 notebook.add(movies, text="Add Movies")
 
-# Books widgets
+# Set positions for the widgets inside the tabs
 positions = [
     (10, 20),
     (70, 20),
@@ -93,6 +91,7 @@ positions = [
     (100, 170),
 ]
 
+# Books widgets and vars
 book_title = StringVar()
 book_author = StringVar()
 book_pages = IntVar()
@@ -110,6 +109,7 @@ book_widgets = {
                                  command=lambda: items_data.add_book(book_title.get(), book_author.get(), book_pages.get())),
 }
 
+# Movie widgets and vars
 movie_title = StringVar()
 movie_director = StringVar()
 movie_length = IntVar()
@@ -127,12 +127,16 @@ movie_widgets = {
                                   command=lambda: items_data.add_movie(movie_title.get(), movie_director.get(), movie_length.get())),
 }
 
+# Places the widgets according to the positions
 for widget_collection in [book_widgets.values(), movie_widgets.values()]:
     for coords, widget in enumerate(widget_collection):
         widget.place(x=positions[coords][0], y=positions[coords][1])
 
+# Filters for the list inside a label frame
 filters = LabelFrame(root, text="Show", pady=5)
 filters.place(x=245, y=265)
+
+# Radio-buttons to select filters
 show_all = Radiobutton(filters, text="All", command=lambda: items_data.change_state(ItemStates.ALL), value=IntVar())
 show_books = Radiobutton(filters, text="Books", command=lambda: items_data.change_state(ItemStates.BOOKS), value=IntVar())
 show_movies = Radiobutton(filters, text="Movies", command=lambda: items_data.change_state(ItemStates.MOVIES), value=IntVar())
