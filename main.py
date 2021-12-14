@@ -66,6 +66,7 @@ class ItemsData:
         else:
             return self.all
 
+
 # Creates the items data object
 items_data = ItemsData()
 
