@@ -1,6 +1,6 @@
 from enum import Enum
 from tkinter import *
-from tkinter import filedialog, ttk
+from tkinter import filedialog, ttk, messagebox
 from PIL import ImageTk, Image
 
 # Root setup
@@ -43,6 +43,8 @@ class ItemsData:
             self.books.append(book)
             self.all.append(book)
             update_lst_box(self.get_items())
+        else:
+            messagebox.showwarning("Missing values", "Missing or invalid values for title, author or amount of pages!")
 
     # Adds movies to the data sets and updates the list
     def add_movie(self, title, director, length):
@@ -51,6 +53,8 @@ class ItemsData:
             self.movies.append(movie)
             self.all.append(movie)
             update_lst_box(self.get_items())
+        else:
+            messagebox.showwarning("Missing values", "Missing or invalid values for title, director or movie length!")
 
     # Changes state and updates the list box
     def change_state(self, state):
