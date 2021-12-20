@@ -13,8 +13,8 @@ lst_box = Listbox(root, height=14, width=35, bd=2, relief=GROOVE)
 lst_box.place(x=245, y=35)
 
 
-# Function to update list box
 def update_lst_box(items_data):
+    """Updates the list box widget by deleting the previous values and inserting the current ones, doesn't return."""
     lst_box.delete(0, END)
     for item in items_data:
         lst_box.insert(END, item)
@@ -29,6 +29,32 @@ class ItemStates(Enum):
 
 # Items data class to work with the data
 class ItemsData:
+    """
+    A class to represent the data list items hold.
+
+    ...
+
+    Attributes
+    ----------
+    books : list
+        a complete list for the book values
+    movies : list
+        a complete list for the movie values
+    all : list
+        a complete list for all the values of all types
+
+    Methods
+    -------
+    add_book(title, author, pages):
+        Adds the book value to the book and all lists, updates list box.
+    add_movie(title, director, length):
+        Adds the movie value to the book and all lists, updates list box.
+    change_state(state):
+        Changes current state to the one specified, updates list box.
+    get_items():
+        Returns data lists according to the current state
+    """
+
     def __init__(self):
         self.books = []
         self.movies = []
@@ -36,8 +62,12 @@ class ItemsData:
 
         self.state = ItemStates.ALL
 
-    # Adds books to the data sets and updates the list
     def add_book(self, title, author, pages):
+        """
+        Given the input values (if the values are valid), concatenates the values to a book string,
+        adds the book value to the book and all lists, updates list box.
+        If the input isn't valid an error messagebox appears.
+        """
         if len(title.strip()) > 1 and len(author.strip()) and pages > 0:
             book = f"{title} ({author}, {pages} pages)"
             self.books.append(book)
@@ -46,8 +76,12 @@ class ItemsData:
         else:
             messagebox.showwarning("Missing values", "Missing or invalid values for title, author or amount of pages!")
 
-    # Adds movies to the data sets and updates the list
     def add_movie(self, title, director, length):
+        """
+        Given the input values (if the values are valid), concatenates the values to a movie string,
+        adds the movie value to the movies and all lists, updates list box.
+        If the input isn't valid an error messagebox appears.
+        """
         if len(title.strip()) > 1 and len(director.strip()) and length > 0:
             movie = f"{title} ({director}, {length} minutes)"
             self.movies.append(movie)
@@ -56,13 +90,13 @@ class ItemsData:
         else:
             messagebox.showwarning("Missing values", "Missing or invalid values for title, director or movie length!")
 
-    # Changes state and updates the list box
     def change_state(self, state):
+        """Changes current state to the one specified, updates list box."""
         self.state = state
         update_lst_box(self.get_items())
 
-    # Gets the items according to the state
     def get_items(self):
+        """Returns data lists according to the current state."""
         if self.state == ItemStates.BOOKS:
             return self.books
         elif self.state == ItemStates.MOVIES:
